@@ -9,20 +9,64 @@ var hr4El = document.getElementById("hour-4");
 var hr5El = document.getElementById("hour-5");
 var hrArray = [hr9El, hr10El, hr11El, hr12El, hr1El, hr2El, hr3El, hr4El, hr5El];
 
+
+
 // Wrap all code that interacts with the DOM in a call to jQuery to ensure that
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
 $(function () {
   // var currentDay = document.getElementById("currentday");
   $('#currentDay').text(dayjs().format('dddd, MMMM D'));
-  console.log(dayjs().hour());
-  for (var i = 0; i < hrArray.length; i++) {
-    if (dayjs().hour() >= 18) {
-      hrArray[i].classList.toggle("past");
-    } else if (dayjs().hour() <= 8) {
-      hrArray[i].classList.toggle("future");
+
+  // hour test \\
+  
+
+  function toggleFuture(hour) {
+    if (hour < 9) {
+      for (var i = 0; i < hrArray.length; i++) {
+        hrArray[i].classList.toggle("future");
+      }
+    } else if (hour > 16) {
+      return;
+    } else if (hour >= 9) {
+      for (var i = hour - 8; i < hour; i++) {
+        hrArray[i].classList.toggle("future");
+      }
     }
-  }
+  };
+
+  function togglePast(hour) {
+    if (hour < 10) {
+      return;
+    } else if (hour > 17) {
+      for (var i = 0; i < hrArray.length; i++) {
+        hrArray[i].classList.toggle("past");
+      }
+    } else if (hour >= 10) {
+      for (var i = 0; i < hour - 9; i++) {
+        hrArray[i].classList.toggle("past");
+      }
+    }
+  };
+
+  function togglePresent(hour) {
+    if (hour < 9) {
+      return;
+    } else if (hour > 17) {
+      return;
+    } else if (hour >= 9) {
+      hrArray[hour - 9].classList.toggle("present");
+    }
+  };
+  function toggleTime(hour) {
+    togglePast(hour);
+    togglePresent(hour);
+    toggleFuture(hour);
+  };
+
+  toggleTime(dayjs().hour());
+  
+  
     // TODO: Add a listener for click events on the save button. This code should
     // use the id in the containing time-block as a key to save the user input in
     // local storage. HINT: What does `this` reference in the click listener
@@ -41,5 +85,5 @@ $(function () {
     // attribute of each time-block be used to do this?
     //
     // TODO: Add code to display the current date in the header of the page.
-  });
+});
   
