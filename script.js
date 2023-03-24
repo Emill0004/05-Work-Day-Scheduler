@@ -19,49 +19,30 @@ $(function () {
   $('#currentDay').text(dayjs().format('dddd, MMMM D'));
 
   // hour test \\
-  
 
-  function toggleFuture(hour) {
+  function toggleTime(hour) {
     if (hour < 9) {
       for (var i = 0; i < hrArray.length; i++) {
         hrArray[i].classList.toggle("future");
       }
-    } else if (hour > 16) {
-      return;
-    } else if (hour >= 9) {
+    } else if (hour > 17) {
+      for (var i = 0; i < hrArray.length; i++) {
+        hrArray[i].classList.toggle("past");
+      }
+    } else if (hour == 9) {
+      hrArray[hour - 9].classList.toggle("present")
+      for (var i = hour - 8; i < hour; i++) {
+        hrArray[i].classList.toggle("future");
+      }
+    } else if (hour >= 10) {
+      hrArray[hour - 9].classList.toggle("present");
+      for (var i = 0; i < hour - 9; i++) {
+        hrArray[i].classList.toggle("past");
+      }
       for (var i = hour - 8; i < hour; i++) {
         hrArray[i].classList.toggle("future");
       }
     }
-  };
-
-  function togglePast(hour) {
-    if (hour < 10) {
-      return;
-    } else if (hour > 17) {
-      for (var i = 0; i < hrArray.length; i++) {
-        hrArray[i].classList.toggle("past");
-      }
-    } else if (hour >= 10) {
-      for (var i = 0; i < hour - 9; i++) {
-        hrArray[i].classList.toggle("past");
-      }
-    }
-  };
-
-  function togglePresent(hour) {
-    if (hour < 9) {
-      return;
-    } else if (hour > 17) {
-      return;
-    } else if (hour >= 9) {
-      hrArray[hour - 9].classList.toggle("present");
-    }
-  };
-  function toggleTime(hour) {
-    togglePast(hour);
-    togglePresent(hour);
-    toggleFuture(hour);
   };
 
   toggleTime(dayjs().hour());
