@@ -8,6 +8,7 @@ var hr3El = document.getElementById("hour-3");
 var hr4El = document.getElementById("hour-4");
 var hr5El = document.getElementById("hour-5");
 var hrArray = [hr9El, hr10El, hr11El, hr12El, hr1El, hr2El, hr3El, hr4El, hr5El];
+var localStArray = ["", "", "", "", "", "", "", "", ""];
 
 
 
@@ -15,18 +16,15 @@ var hrArray = [hr9El, hr10El, hr11El, hr12El, hr1El, hr2El, hr3El, hr4El, hr5El]
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
 $(function () {
-  // var currentDay = document.getElementById("currentday");
-  function currentDate () {
-    $('#currentDay').text(dayjs().format('dddd, MMMM D, ss'));
-  };
-
-  setInterval(currentDate, 1000);
-  
+  $('#currentDay').text(dayjs().format('dddd, MMMM D'));
 
   // hour test \\
 
   function toggleTime() {
     var hour = dayjs().hour();
+    for (var i = 0; i < hrArray.length; i++) {
+      hrArray[i].setAttribute("class", "row time-block");
+    }
     if (hour < 9) {
       for (var i = 0; i < hrArray.length; i++) {
         hrArray[i].classList.toggle("future");
@@ -51,14 +49,9 @@ $(function () {
     }
   };
 
-  function updateTime() {
-    toggleTime();
-    toggleTime();
-  };
-
   toggleTime();
-  setInterval(updateTime, 60000);
-  
+  setInterval(toggleTime, 60000);
+
   
     // TODO: Add a listener for click events on the save button. This code should
     // use the id in the containing time-block as a key to save the user input in
